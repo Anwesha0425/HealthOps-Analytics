@@ -1,0 +1,26 @@
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Excel temporary and lock files
+~$*.xlsx
+~$*.xls
+
+# Power BI temporary files
+*.tmp
+*.pbix.backup
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
