@@ -85,29 +85,14 @@ Maps the facility's 18.14% 30-day readmission risk profile and identifies length
 
 ```mermaid
 flowchart TD
-    subgraph Dim_Patients ["Dim_Patients (Dimension)"]
-        direction TB
-        P_PK["🔑 patient_id (PK)"]
-        P_INFO["patient_name<br/>gender<br/>age<br/>insurance_provider"]
-    end
+    Patients["Dim_Patients (Dimension)<br/>────────────────────<br/>🔑 patient_id [PK]<br/>• patient_name<br/>• gender<br/>• age<br/>• insurance_provider"]
 
-    subgraph Fact_Admissions ["Fact_Admissions (Fact Table)"]
-        direction TB
-        A_PK["🔑 encounter_id (PK)"]
-        A_FK["🔗 patient_id (FK)<br/>🔗 doctor_id (FK)"]
-        A_DATES["admission_date<br/>discharge_date<br/>stay_days"]
-        A_CLINICAL["admission_type<br/>primary_diagnosis<br/>patient_satisfaction<br/>readmission_30_days"]
-        A_FINANCIAL["total_charges<br/>net_paid<br/>waived_amount"]
-    end
+    Admissions["Fact_Admissions (Fact Table)<br/>────────────────────<br/>🔑 encounter_id [PK]<br/>🔗 patient_id [FK]<br/>🔗 doctor_id [FK]<br/>• admission_date / discharge_date<br/>• stay_days<br/>• admission_type<br/>• primary_diagnosis<br/>• total_charges / net_paid / waived_amount<br/>• patient_satisfaction<br/>• readmission_30_days"]
 
-    subgraph Dim_Doctors ["Dim_Doctors (Dimension)"]
-        direction TB
-        D_PK["🔑 doctor_id (PK)"]
-        D_INFO["doctor_name<br/>specialty"]
-    end
+    Doctors["Dim_Doctors (Dimension)<br/>────────────────────<br/>🔑 doctor_id [PK]<br/>• doctor_name<br/>• specialty"]
 
-    Dim_Patients -->|1 : N (patient_id)| Fact_Admissions
-    Dim_Doctors -->|1 : N (doctor_id)| Fact_Admissions
+    Patients -->|"1 : N"| Admissions
+    Doctors -->|"1 : N"| Admissions
 ```
 
 | Table Name | Schema Type | Primary Key | Foreign Keys | Key Metric / Business Attribute |
