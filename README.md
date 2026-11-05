@@ -84,41 +84,37 @@ Maps the facility's 18.14% 30-day readmission risk profile and identifies length
 ## 🗄️ Database Architecture (Star Schema)
 
 ```mermaid
-erDiagram
-    PATIENTS ||--o{ ADMISSIONS : "has encounter"
-    DOCTORS ||--o{ ADMISSIONS : "attends"
+flowchart TD
+    subgraph Dim_Patients ["Dim_Patients (Dimension)"]
+        direction TB
+        P_PK["🔑 patient_id (PK)"]
+        P_INFO["patient_name<br/>gender<br/>age<br/>insurance_provider"]
+    end
 
-    PATIENTS {
-        int patient_id PK
-        string patient_name
-        string gender
-        int age
-        string insurance_provider
-    }
+    subgraph Fact_Admissions ["Fact_Admissions (Fact Table)"]
+        direction TB
+        A_PK["🔑 encounter_id (PK)"]
+        A_FK["🔗 patient_id (FK)<br/>🔗 doctor_id (FK)"]
+        A_DATES["admission_date<br/>discharge_date<br/>stay_days"]
+        A_CLINICAL["admission_type<br/>primary_diagnosis<br/>patient_satisfaction<br/>readmission_30_days"]
+        A_FINANCIAL["total_charges<br/>net_paid<br/>waived_amount"]
+    end
 
-    DOCTORS {
-        int doctor_id PK
-        string doctor_name
-        string specialty
-    }
+    subgraph Dim_Doctors ["Dim_Doctors (Dimension)"]
+        direction TB
+        D_PK["🔑 doctor_id (PK)"]
+        D_INFO["doctor_name<br/>specialty"]
+    end
 
-    ADMISSIONS {
-        int encounter_id PK
-        int patient_id FK
-        int doctor_id FK
-        date admission_date
-        date discharge_date
-        string admission_type
-        string primary_diagnosis
-        decimal total_charges
-        decimal net_paid
-        decimal waived_amount
-        int patient_satisfaction
-        string readmission_30_days
-        int year_quarter
-        int stay_days
-    }
+    Dim_Patients -->|1 : N (patient_id)| Fact_Admissions
+    Dim_Doctors -->|1 : N (doctor_id)| Fact_Admissions
 ```
+
+| Table Name | Schema Type | Primary Key | Foreign Keys | Key Metric / Business Attribute |
+| :--- | :--- | :--- | :--- | :--- |
+| **`Dim_Patients`** | Dimension | `patient_id` | *None* | Patient demographics, age cohort, primary insurance provider |
+| **`Dim_Doctors`** | Dimension | `doctor_id` | *None* | Attending physician name, medical specialty department |
+| **`Fact_Admissions`** | Fact | `encounter_id` | `patient_id`, `doctor_id` | Billed charges, collections, write-offs, stay duration, 30-day readmission |
 
 ---
 
