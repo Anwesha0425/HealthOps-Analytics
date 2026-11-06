@@ -1,5 +1,5 @@
-# Healthcare Operations Analytics Project
-### End-to-End Enterprise Analytics Pipeline (Excel ➔ SQL ➔ Power BI)
+# HealthOps Analytics
+### End-to-End Enterprise Healthcare Operations Pipeline (Excel ➔ SQL ➔ Power BI)
 
 **Tech Stack:** Microsoft Power BI & DAX | SQL (MySQL / SQLite) | Microsoft Excel & Power Query | Python
 
@@ -106,7 +106,7 @@ flowchart TD
 ## 📁 Repository Directory Structure
 
 ```text
-Healthcare-Operations-Analytics-Project/
+HealthOps-Analytics/
 ├── .gitignore                                   # Ignore rules for DB, temp files, and caches
 ├── README.md                                    # Project documentation & dashboard report
 ├── dashboard/
